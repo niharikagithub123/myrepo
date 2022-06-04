@@ -1,0 +1,25 @@
+- hosts: prod
+  become: yes
+  tasks: 
+   - apt: 
+      update_cache: yes
+      name: openjdk-8-jdk
+      state: present
+   - get_url:
+      url: https://archive.apache.org/dist/tomcat/tomcat-9/v9.0.38/bin/apache-tomcat-9.0.38.tar.gz
+      dest: /tmp
+   - unarchive:
+        src: /tmp/apache-tomcat-9.0.38.tar.gz
+        dest: /opt
+        remote_src: yes
+   - get_url:
+       url: https://github.com/lerndevops/labs/raw/master/docker/images/code/sampleapp.war
+       dest: /opt/apache-tomcat-9.0.38/webapps/
+   - file:
+      path: /opt/apache-tomcat-9.o.38
+      mode: 0755
+      state: directory
+      recurse: yes
+   - shell: /opt/apache-tomcat-9.0.38/bin/startup.sh
+
+            

@@ -1,0 +1,19 @@
+- hosts: prod
+  become: yes
+  tasks:
+    - name: install nginx webserver
+      apt:
+        update_cache: yes
+        name: nginx
+        state: present
+    - name: deploy app
+      copy:
+        src: /home/devops/index.html
+        dest: /var/www/html
+    - name: restart service
+      service:
+        name: nginx
+        state: restarted
+
+
+       
